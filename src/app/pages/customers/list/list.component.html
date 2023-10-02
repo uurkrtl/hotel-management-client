@@ -1,0 +1,54 @@
+<div class="container mt-3 mb-5" >
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">Nachname suchen</span>
+                <input type="text" [(ngModel)]="filterText" class="form-control" placeholder="Nachname" aria-label="lastname" id="filterText" aria-describedby="addon-wrapping">
+            </div>
+        </div>
+        <div class="col-sm-6 text-end">
+            <a href="/customer/add" class="btn btn-success">Neuer Gast</a>
+        </div>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="statusFilterText" value="">
+        <label class="form-check-label" for="inlineRadio1">Alle</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="statusFilterText" value=true>
+        <label class="form-check-label" for="inlineRadio1">Aktiv</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="statusFilterText" value=false>
+        <label class="form-check-label" for="inlineRadio1">Passiv</label>
+    </div>
+    
+    <table class="table table-striped mt-2">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Vorname</th>
+            <th scope="col">Nachname</th>
+            <th scope="col">Stadt</th>
+            <th scope="col">Telefonnummer</th>
+            <th scope="col">Status</th>
+            <th scope="col">Einzelheiten</th>
+            <th scope="col">Aktualisieren</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let customer of customers | filterPipe:filterText | customerStatusFilter:statusFilterText; index as i">
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ customer.firstName }}</td>
+                <td>{{ customer.lastName }}</td>
+                <td>{{ customer.city }}</td>
+                <td>{{ customer.phone }}</td>
+                <td *ngIf="customer.active; else passive">Aktiv</td>
+                <ng-template #passive><td>Passiv</td></ng-template>
+                <td><a routerLink="/customer/details" [queryParams]="{customerId:customer.id}" class="btn btn-primary">Einzelheiten</a></td>
+                <td><a routerLink="/customer/update" [queryParams]="{customerId:customer.id}" class="btn btn-warning">Aktualisieren</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

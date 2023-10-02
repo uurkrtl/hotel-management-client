@@ -1,0 +1,76 @@
+<body class="bg-body-tertiary">
+    <div class="container">
+        <main>
+            <div class="py-5 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="57" fill="currentColor" class="bd-placeholder-img rounded-circle bi bi-bookmarks" viewBox="0 0 16 16">
+                    <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
+                    <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
+                </svg>
+                <h2>Buchungstatusformular</h2>
+            </div>
+    
+            <div class="row g-5">
+                <!-- Customer Details/Update Status Form -->
+                <div class="col-md-12 col-lg-12">
+                    <form class="needs-validation">
+                        <div class="row g-3 mb-3">
+
+                            <div class="col-sm-6">
+                                <div class="input-group mb-3 col-sm-6">
+                                    <span class="input-group-text" id="basic-addon1">Status-ID</span>
+                                    <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{bookingStatusId}}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group mb-3 col-sm-6">
+                                    <span class="input-group-text" id="basic-addon1">Statusname</span>
+                                    <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{name}}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="input-group mb-3 col-sm-6">
+                                    <span class="input-group-text" id="basic-addon1">Status</span>
+                                    <input *ngIf="isActive; else passive" type="text" class="form-control" aria-describedby="basic-addon1" value="Aktiv" readonly>
+                                    <ng-template #passive><input type="text" class="form-control" aria-describedby="basic-addon1" value="Passiv" readonly></ng-template>
+                                </div>
+                            </div>
+
+                            <!-- END Employee Add/Update Form -->
+
+                            <div class="col-sm-2">
+                                <button *ngIf="isActive; else activeButoon" class="w-100 btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="makeBookingStatusPassive(bookingStatusId)">Passiv machen</button>
+                                <ng-template #activeButoon><button class="w-100 btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="makeBookingStatusActive(bookingStatusId)">Aktiv machen</button></ng-template>
+                            </div>
+                    
+                        </div>
+                    </form>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Zimmer Management</h1>
+                                    <button *ngIf="errorMessage" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body alert" role="alert">
+                                    <h6 *ngIf="successMessage; else errorMessage" class="text-success">{{successMessage}}</h6>
+                                    <ng-template #errorMessage><h6 class="text-danger">{{errorMessage}}</h6></ng-template>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="/booking-status/details?bookingStatusId={{bookingStatusId}}" class="btn btn-secondary">Schließen</a>
+                                    <a href="/booking-status" class="btn btn-warning">Zimmer</a>
+                                    <a href="/booking-status/add" class="btn btn-primary">Neues Zimmer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Modal -->
+        
+                </div>
+            </div>
+        </main>
+    </div>
+</body>

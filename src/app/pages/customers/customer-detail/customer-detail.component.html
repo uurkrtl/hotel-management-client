@@ -1,0 +1,111 @@
+<body class="bg-body-tertiary">
+    <div class="container">
+        <main>
+            <div class="py-5 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="57" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                    <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                </svg>
+                <h2>Gastformular</h2>
+            </div>
+    
+        <div class="row g-5">
+            <!-- Customer Details/Update Status Form -->
+            <div class="col-md-12 col-lg-12">
+                <form class="needs-validation">
+                    <div class="row g-3 mb-3">
+                        
+                        <div class="col-sm-2">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Gast-ID</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{customerId}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Vorname</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{firstName}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Nachname</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{lastName}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Adresse</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{address}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">PLZ</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{postCode}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Stadt</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{city}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Telefon-/Hannynummer</span>
+                                <input type="text" class="form-control" aria-describedby="basic-addon1" value="{{phone}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="input-group mb-3 col-sm-6">
+                                <span class="input-group-text" id="basic-addon1">Status</span>
+                                <input *ngIf="isActive; else passive" type="text" class="form-control" aria-describedby="basic-addon1" value="Aktiv" readonly>
+                                <ng-template #passive><input type="text" class="form-control" aria-describedby="basic-addon1" value="Passiv" readonly></ng-template>
+                            </div>
+                        </div>
+
+                        <!-- END Employee Add/Update Form -->
+
+                        <div class="col-sm-2">
+                            <button *ngIf="isActive; else activeButoon" class="w-100 btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="makeCustomerPassive(customerId)">Passiv machen</button>
+                            <ng-template #activeButoon><button class="w-100 btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="makeCustomerActive(customerId)">Aktiv machen</button></ng-template>
+                        </div>
+                
+                    </div>
+                </form>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Gast Management</h1>
+                                <button *ngIf="errorMessage" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body alert" role="alert">
+                                <h6 *ngIf="successMessage; else errorMessage" class="text-success">{{successMessage}}</h6>
+                                <ng-template #errorMessage><h6 class="text-danger">{{errorMessage}}</h6></ng-template>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/customer/details?customerId={{customerId}}" class="btn btn-secondary">Schließen</a>
+                                <a href="/customers" class="btn btn-warning">Gäste</a>
+                                <a href="/customer/add" class="btn btn-primary">Neuer Gast</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+    
+            </div>
+        </div>
+      </main>
+    </div>
+</body>

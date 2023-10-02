@@ -1,0 +1,52 @@
+<div class="container mt-3 mb-5" >
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">Zimmer suchen</span>
+                <input type="text" [(ngModel)]="filterRoomText" class="form-control" placeholder="Zimmername" aria-label="lastname" id="filterText" aria-describedby="addon-wrapping">
+            </div>
+        </div>
+        <div class="col-sm-6 text-end">
+            <a href="/room/add" class="btn btn-success">Neues Zimmer</a>
+        </div>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="roomStatusFilterText" value="">
+        <label class="form-check-label" for="inlineRadio1">Alle</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="roomStatusFilterText" value=true>
+        <label class="form-check-label" for="inlineRadio1">Aktiv</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="roomStatusFilterText" value=false>
+        <label class="form-check-label" for="inlineRadio1">Passiv</label>
+    </div>    
+    
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Preis</th>
+            <th scope="col">Status</th>
+            <th scope="col">Einzelheiten</th>
+            <th scope="col">Aktualisieren</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let room of rooms | roomFilter:filterRoomText | roomStatusFilter:roomStatusFilterText; index as i">
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ room.name }}</td>
+                <td>{{ room.floor }}</td>
+                <td>{{ room.price }}</td>
+                <td *ngIf="room.active; else passive">Aktiv</td>
+                <ng-template #passive><td>Passiv</td></ng-template>
+                <td><a routerLink="/room/details" [queryParams]="{roomId:room.id}" class="btn btn-primary">Einzelheiten</a></td>
+                <td><a routerLink="/room/update" [queryParams]="{roomId:room.id}" class="btn btn-warning">Aktualisieren</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

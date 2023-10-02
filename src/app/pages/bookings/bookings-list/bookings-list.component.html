@@ -1,0 +1,52 @@
+<div class="container mt-3 mb-5" >
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">Buchung suchen</span>
+                <input type="text" [(ngModel)]="filterBookingCustomerNameText" class="form-control" placeholder="Nachname" aria-label="customerLastName" id="filterText" aria-describedby="addon-wrapping">
+                <input type="text" [(ngModel)]="filterBookingRoomNameText" class="form-control" placeholder="Roomnummer" aria-label="RoomName" id="filterText" aria-describedby="addon-wrapping">
+            </div>
+        </div>
+        <div class="col-sm-6 text-end">
+            <a href="/booking/add" class="btn btn-success">Neue Buchung</a>
+        </div>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="filterBookingStatusNameText" value="">
+        <label class="form-check-label" for="inlineRadio1">Alle</label>
+    </div>
+    <div class="form-check form-check-inline" *ngFor="let status of bookingStatuses">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="filterBookingStatusNameText" value={{status.name}}>
+        <label class="form-check-label" for="inlineRadio1">{{status.name}}</label>
+    </div>    
+    
+    <table class="table table-striped mt-2">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Vorname</th>
+            <th scope="col">Nachname</th>
+            <th scope="col">Zimmer</th>
+            <th scope="col">Check-in Datum</th>
+            <th scope="col">Check-out Datum</th>
+            <th scope="col">Status</th>
+            <th scope="col">Einzelheiten</th>
+            <th scope="col">Aktualisieren</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let booking of bookings | bookingFilter:filterBookingCustomerNameText | bookingRoomFilter:filterBookingRoomNameText | bookingStatusNameFilter:filterBookingStatusNameText; index as i">
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ booking.customerFirstName }}</td>
+                <td>{{ booking.customerLastName }}</td>
+                <td>{{ booking.roomName }}</td>
+                <td>{{ booking.checkInDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ booking.checkOutDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ booking.bookingStatusName }}</td>
+                <td><a routerLink="/booking/details" [queryParams]="{bookingId:booking.id}" class="btn btn-primary">Einzelheiten</a></td>
+                <td><a routerLink="/booking/update" [queryParams]="{bookingId:booking.id}" class="btn btn-warning">Aktualisieren</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
